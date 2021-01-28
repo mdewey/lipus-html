@@ -1,0 +1,12 @@
+{
+  "name": "lipus-html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "browser-sync start --server public --files public"
+  },
+  "dependencies": {
+    "browser-sync": "^2.26.14"
+  }
+}
