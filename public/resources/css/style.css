@@ -1,58 +1,9 @@
-div {
-  font-weight: 600;
-  color: #808080;
-}
-
-.container {
-  position: relative;
-  width: 95%;
-  height: 0;
-  padding-bottom: 56.25%;
-}
-
 .iframe-editor {
   position: absolute;
   top: 0;
   left: 0;
   width: 95%;
   height: 95%;
-}
-
-#drafts {
-  margin-left: auto;
-  margin-right: auto;
-  border-collapse: collapse;
-  width: 75%;
-}
-
-#drafts td,
-#drafts th {
-  padding: 0.5rem;
-}
-
-a.button1 {
-  display: inline-block;
-  padding: 0.17em 0.6em;
-  border: 0.1em solid #808080;
-  margin: 0 0.3em 0.3em 0;
-  border-radius: 0.12em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 300;
-  color: #808080;
-  text-align: center;
-  transition: all 0.2s;
-}
-a.button1:hover {
-  color: #000000;
-  background-color: #f2f2f2;
-}
-@media all and (max-width: 15em) {
-  a.button1 {
-    display: block;
-    margin: 0.2em auto;
-  }
 }
 
 /* new styles  */
@@ -65,10 +16,6 @@ html > body {
   border-bottom: 2px solid #dfe1e2;
   margin-bottom: 2rem;
   background-color: #ffffff;
-}
-
-.debug-border {
-  border: 5px dashed pink;
 }
 
 .search-form {
@@ -109,9 +56,20 @@ label.usa-label {
   margin: 0;
 }
 
+.drafts-list {
+  display: flex;
+  justify-content: center;
+}
+
+#drafts {
+  border-collapse: collapse;
+  width: 75%;
+}
+
 #drafts.usa-table th,
 #drafts.usa-table td {
   border-color: #3d4551;
+  padding: 0.5rem;
 }
 
 #drafts th {
