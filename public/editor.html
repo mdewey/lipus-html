@@ -1,67 +1,105 @@
 <!DOCTYPE html>
-<html lang="en"> 
-<head>
-<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-<meta content="utf-8" http-equiv="encoding">
-    <link href="resources/css/style.css" rel="stylesheet">
-<!-- Contains Thunderhead API & RMI functionality -->
-    <script type="text/javascript" src="https://scdev.lps.vaec.va.gov/smartcomms/draft-editor/js/draft-editor-api.js"></script>
-    <script type="text/javascript" src="https://scdev.lps.vaec.va.gov/smartcomms/draft-editor/js/draft-editor-api-min.js"></script>
+<html lang="en">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="utf-8" http-equiv="encoding" />
+    <script
+      type="text/javascript"
+      src="resources/js/jquery-3.5.1.min.js"
+    ></script>
+    <script src="./resources/uswds-2.10.0/js/uswds-init.min.js"></script>
+    <link rel="stylesheet" href="resources/uswds-2.10.0/css/uswds.min.css" />
+    <link href="resources/css/style.css" rel="stylesheet" />
+    <!-- Contains Thunderhead API & RMI functionality -->
+    <script
+      type="text/javascript"
+      src="https://scdev.lps.vaec.va.gov/smartcomms/draft-editor/js/draft-editor-api.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://scdev.lps.vaec.va.gov/smartcomms/draft-editor/js/draft-editor-api-min.js"
+    ></script>
 
     <script type="text/javascript">
+      var editor;
+      var draftEditorWindowEl;
 
-        var editor;
-        var draftEditorWindowEl;
-        
-        var LoadStartUpConfig = {
-        		version: '2',
-        		//editingMode: 'readOnly',
-        		features: {
-        		enabled: ['UndoRedo', 'ControlCodes', 'PlainTextPaste', 'TrackChanges', 'Footnotes', 'SimpleFormatting',
-        		'TextAlignment', 'BulletList', 'NumberList', 'ListIndentation', 'InsertImage', 'InsertLink',
-        		'InsertSharedContent', 'InsertPageBreak', 'InsertPageNumbering', 'Preview', 'Document', 'Review',
-        		'DataValues', 'SpellCheck', 'FindAndReplace', 'StylePicker', 'AddComment', 'Table', 'BordersAndShading']
-        		},
-        		forceShowChoicesInlineChecked: true,
-        		openViewAfterLoad: 'documentMap',
-        		//openInPreview: true,
-        		//focusOnFirstEditPoint: false,
-        		//showTrackChanges: true,
-        		//disableInlineEditing: true,
-        		forcePreviewFormat: 'PDF'//,
-        		//defaultFolder: 157613989,
-        		//collapseChoiceLists: true,
-        		//defaultSpellcheckLanguageId: 1
-        		};
+      var LoadStartUpConfig = {
+        version: "2",
+        //editingMode: 'readOnly',
+        features: {
+          enabled: [
+            "UndoRedo",
+            "ControlCodes",
+            "PlainTextPaste",
+            "TrackChanges",
+            "Footnotes",
+            "SimpleFormatting",
+            "TextAlignment",
+            "BulletList",
+            "NumberList",
+            "ListIndentation",
+            "InsertImage",
+            "InsertLink",
+            "InsertSharedContent",
+            "InsertPageBreak",
+            "InsertPageNumbering",
+            "Preview",
+            "Document",
+            "Review",
+            "DataValues",
+            "SpellCheck",
+            "FindAndReplace",
+            "StylePicker",
+            "AddComment",
+            "Table",
+            "BordersAndShading",
+          ],
+        },
+        forceShowChoicesInlineChecked: true,
+        openViewAfterLoad: "documentMap",
+        //openInPreview: true,
+        //focusOnFirstEditPoint: false,
+        //showTrackChanges: true,
+        //disableInlineEditing: true,
+        forcePreviewFormat: "PDF", //,
+        //defaultFolder: 157613989,
+        //collapseChoiceLists: true,
+        //defaultSpellcheckLanguageId: 1
+      };
 
-        function renderDraftEditor() {
+      function renderDraftEditor() {
+        // If the Draft-Editor context is required to be changed, it can be done like so:
 
-            // If the Draft-Editor context is required to be changed, it can be done like so:
+        // Initialise Thunderhead API
+        //   In this example both Thunderhead Server & Client are on the same host, 'localhost', in a real
+        //   environment it's likely they would be on separate hosts.
 
-            // Initialise Thunderhead API
-            //   In this example both Thunderhead Server & Client are on the same host, 'localhost', in a real
-            //   environment it's likely they would be on separate hosts.
+        var samlLoginLink = "";
+        var authUrlValue;
+        if (samlLoginLink.length > 0) {
+          authUrlValue = samlLoginLink;
+        }
 
-            var samlLoginLink = '';
-            var authUrlValue;
-            if (samlLoginLink.length > 0) {
-                authUrlValue = samlLoginLink;
-            }
-
-            var clientServerValue = location.protocol + '//' + location.host;
-            var authParamsValue;
-            var thunderheadServerValue;
-            // logic will be needed for future SSO
-            //if (serviceUrl.indexOf('http') !== 0) {
-                //Thunderhead.DraftEditor.prototype.DRAFTEDITOR_CONTEXT = '/smartcomms/draft-editor';
-                Thunderhead.DraftEditor.prototype.DRAFTEDITOR_CONTEXT = '/smartcomms/draft-editor'; 
-                thunderheadServerValue = 'https://scdev.lps.vaec.va.gov'; 
-                if (authUrlValue) {
-                    authParamsValue = 'targetURL=' + encodeURIComponent(thunderheadServerValue +
-                                    '/smartcomms/draft-editor/draft-editor.jsp?clientServer='
-                    				+ encodeURIComponent(thunderheadServerValue));
-                }
-            /* }
+        var clientServerValue = location.protocol + "//" + location.host;
+        var authParamsValue;
+        var thunderheadServerValue;
+        // logic will be needed for future SSO
+        //if (serviceUrl.indexOf('http') !== 0) {
+        //Thunderhead.DraftEditor.prototype.DRAFTEDITOR_CONTEXT = '/smartcomms/draft-editor';
+        Thunderhead.DraftEditor.prototype.DRAFTEDITOR_CONTEXT =
+          "/smartcomms/draft-editor";
+        thunderheadServerValue = "https://scdev.lps.vaec.va.gov";
+        if (authUrlValue) {
+          authParamsValue =
+            "targetURL=" +
+            encodeURIComponent(
+              thunderheadServerValue +
+                "/smartcomms/draft-editor/draft-editor.jsp?clientServer=" +
+                encodeURIComponent(thunderheadServerValue)
+            );
+        }
+        /* }
             else {
                 var context = serviceUrl.substring(serviceUrl.indexOf('/', 8), serviceUrl.length + 1);
                 Thunderhead.DraftEditor.prototype.DRAFTEDITOR_CONTEXT =  context + '/draft-editor';
@@ -73,138 +111,184 @@
                 }
             } */
 
-            editor = new Thunderhead.DraftEditor({
+        editor = new Thunderhead.DraftEditor({
+          // The protocol (http/https), Thunderhead Server host, & port if not 80/443
+          thunderheadServer: thunderheadServerValue,
+          // The protocol (http/https), Client Server host, & port if not 80/443 - used to validate origin of API messages
+          clientServer: clientServerValue,
+          // See HTML below, this div will contain the Thunderhead Application iFrame
+          targetElementID: "thunderheadApplication",
+          // URL to be opened before opening Draft Editor - for authentication purposes
+          authUrl: authUrlValue,
+          authParams: authParamsValue,
+          //disable force auth whilst using the bundled version
+          disableForceAuth: true,
+          navigateAwayWarning: "",
+          // A function to be executed once the Draft-Editor is loaded, for example:  Can be used to execute API calls on start-up
+          onReady: function () {
+            console.log("onReady: function ()");
+            loadDraftFromString();
+          },
+          // Will be called to retrieve configuration for the Draft-Editor
+          loadStartupConfig: function () {
+            return LoadStartUpConfig;
+          },
+        });
+        return true;
+      }
 
-                // The protocol (http/https), Thunderhead Server host, & port if not 80/443
-                thunderheadServer: thunderheadServerValue,
-                // The protocol (http/https), Client Server host, & port if not 80/443 - used to validate origin of API messages
-                clientServer: clientServerValue,
-                // See HTML below, this div will contain the Thunderhead Application iFrame
-                targetElementID: 'thunderheadApplication',
-                // URL to be opened before opening Draft Editor - for authentication purposes
-                authUrl: authUrlValue,
-                authParams: authParamsValue,
-                //disable force auth whilst using the bundled version
-                disableForceAuth: true,
-                navigateAwayWarning: '',
-                // A function to be executed once the Draft-Editor is loaded, for example:  Can be used to execute API calls on start-up
-                onReady: function () {
-					console.log('onReady: function ()');
-                	loadDraftFromString();
+      window.onload = function () {
+        draftEditorWindowEl = document.getElementById("thunderheadApplication");
+        renderDraftEditor();
+        resizeApplicationDIV();
+        window.onresize = resizeApplicationDIV;
+        console.log("protocol: " + location.protocol);
+        console.log("host: " + location.host);
+        console.log("ctx: " + this);
+      };
 
-                },
-                // Will be called to retrieve configuration for the Draft-Editor
-                loadStartupConfig: function () {
-                    return LoadStartUpConfig;
-                }
-            });
-            return true;
-
-        }
-
-
-        window.onload = function() {
-            draftEditorWindowEl = document.getElementById('thunderheadApplication');
-            renderDraftEditor();
+      function loadDraftEditor() {
+        draftEditorWindowEl = document.getElementById("thunderheadApplication");
+        if (renderDraftEditor()) {
+          console.log("renderDraftEditor()");
           resizeApplicationDIV();
-            window.onresize = resizeApplicationDIV;
-          console.log('protocol: ' + location.protocol);
-          console.log('host: ' + location.host);
-          console.log('ctx: ' + this);
-        };
-
-		 function loadDraftEditor() {
-		     draftEditorWindowEl = document.getElementById('thunderheadApplication');
-		     if (renderDraftEditor()) {
-			     console.log('renderDraftEditor()');
-		         resizeApplicationDIV();
-		         window.onresize = resizeApplicationDIV;
-		     }
-		 }
-		 
-		// get draft xml from editor iframe
-		function getStringFromEditor() {
-			editor.getString(function(success, reviewCase) {
-				if (success && reviewCase) {
-					//console.log(reviewCase);	
-	    			console.log('getStringFromEditor()');				
-	    			document.getElementById('xmLDATABASE64').value = b64EncodeUnicode(reviewCase);
-					submitForm();
-				}
-			});
-		}
- 
-		// load draft xml into editor iframe
-        function loadDraftFromString() {
-            var draftString = b64DecodeUnicode(document.getElementById('xmLDATABASE64').value);
- 			console.log(draftString);
- 			
-            if (draftString) {
-                editor.loadString(draftString, false, function(success, loadSuccess) {
-                    //alert('Load String called back.\nAPI call success: ' + success + '\nLoad success: ' + loadSuccess);
-                    // enable save and finalize buttons when the editor iframe loads xml
-        	    	document.getElementById('saveBtn').removeAttribute("disabled");
-        	    	document.getElementById('finalBtn').removeAttribute("disabled");
-                });
-            }
-            else {
-                alert('You must specify a string to load');
-            }
-
+          window.onresize = resizeApplicationDIV;
         }
+      }
 
-        function resizeApplicationDIV() {
-            var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            var contentHeight = viewportHeight - draftEditorWindowEl.offsetTop;
-            draftEditorWindowEl.style.height = contentHeight + 'px';
-        };
+      // get draft xml from editor iframe
+      function getStringFromEditor() {
+        editor.getString(function (success, reviewCase) {
+          if (success && reviewCase) {
+            //console.log(reviewCase);
+            console.log("getStringFromEditor()");
+            document.getElementById("xmLDATABASE64").value = b64EncodeUnicode(
+              reviewCase
+            );
+            submitForm();
+          }
+        });
+      }
 
-        function setEditMode() {
-            var draftEditorEditingModeEl = document.getElementById('draftEditorEditingModeEl');
-            var draftEditorEditingMode = draftEditorEditingModeEl.options[draftEditorEditingModeEl.selectedIndex].value;
-          editor.setEditMode(draftEditorEditingMode);
-        };
-    
-	    function submitForm() {
-	    	// submit or validate here , disable after that using below
-	    	console.log('submitForm()');
-	    	document.getElementById('saveBtn').setAttribute("disabled","disabled");
-	    	document.getElementById('finalBtn').setAttribute("disabled","disabled");
-    	}
-	    
-	    function b64EncodeUnicode(str) {
-	        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-	            return String.fromCharCode(parseInt(p1, 16))
-	        }))
-	    }
-	    
-	    function b64DecodeUnicode(str) {
-	        return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-	            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-	        }).join(''))
-	    }
+      // load draft xml into editor iframe
+      function loadDraftFromString() {
+        var draftString = b64DecodeUnicode(
+          document.getElementById("xmLDATABASE64").value
+        );
+        console.log(draftString);
+
+        if (draftString) {
+          editor.loadString(
+            draftString,
+            false,
+            function (success, loadSuccess) {
+              //alert('Load String called back.\nAPI call success: ' + success + '\nLoad success: ' + loadSuccess);
+              // enable save and finalize buttons when the editor iframe loads xml
+              document.getElementById("saveBtn").removeAttribute("disabled");
+              document.getElementById("finalBtn").removeAttribute("disabled");
+            }
+          );
+        } else {
+          alert("You must specify a string to load");
+        }
+      }
+
+      function resizeApplicationDIV() {
+        var viewportHeight =
+          window.innerHeight ||
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+        var contentHeight = viewportHeight - draftEditorWindowEl.offsetTop;
+        draftEditorWindowEl.style.height = contentHeight + "px";
+      }
+
+      function setEditMode() {
+        var draftEditorEditingModeEl = document.getElementById(
+          "draftEditorEditingModeEl"
+        );
+        var draftEditorEditingMode =
+          draftEditorEditingModeEl.options[
+            draftEditorEditingModeEl.selectedIndex
+          ].value;
+        editor.setEditMode(draftEditorEditingMode);
+      }
+
+      function submitForm() {
+        // submit or validate here , disable after that using below
+        console.log("submitForm()");
+        document.getElementById("saveBtn").setAttribute("disabled", "disabled");
+        document
+          .getElementById("finalBtn")
+          .setAttribute("disabled", "disabled");
+      }
+
+      function b64EncodeUnicode(str) {
+        return btoa(
+          encodeURIComponent(str).replace(
+            /%([0-9A-F]{2})/g,
+            function (match, p1) {
+              return String.fromCharCode(parseInt(p1, 16));
+            }
+          )
+        );
+      }
+
+      function b64DecodeUnicode(str) {
+        return decodeURIComponent(
+          Array.prototype.map
+            .call(atob(str), function (c) {
+              return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join("")
+        );
+      }
     </script>
-</head>
-<body>
-
-<div id="header">
-       <a href="list">List of Draft</a>
-       
-       
-       
-              
-	        
-	        
-	        	<form id="draftForm" action="/draft-editor/editor" method="post">
-	           		<input id="requesTID" name="requesTID" type="hidden" value="147" class="requesTID" value="147"/>
-	           		<input id="requesTID" name="requesTID" type="hidden" value="147" class="requesTID" value="147"/>
-	           		<input id="xmLDATABASE64" name="xmLDATABASE64" type="hidden" value="PHJldmlldy1jYXNlIGNyZWF0ZWRhdGU9IjI2L0phbi8yMDIxIDE1OjQxOjE4IiBzeXN0ZW09IiIgYmF0Y2hpZD0iMCIgdHJhbnNhY3Rpb25ubz0iMSIgYmF0Y2huYW1lPSIiIHZlcnNpb249IjYuMCI+PHRyYW5zYWN0aW9uPjxvYmplY3RzPjxvYmplY3QgY2xhc3M9IlRoXzY5MDM0OTExNl80X1JPV1MiIG5hbWU9IlJPV1MiPjxwcm9wZXJ0eSBuYW1lPSJSRVFVRVNUX0lEIiB2YWx1ZT0iMDAwMDAwMDAzNiIgLz48cHJvcGVydHkgbmFtZT0iRk9STV9UWVBFIiB2YWx1ZT0iQ09SUiIgLz48cHJvcGVydHkgbmFtZT0iRk9STV9TVUJfVFlQRSIgdmFsdWU9IkZSVFhUMDFQRSIgLz48cHJvcGVydHkgbmFtZT0iREFUQVNFVF9TRVFVRU5DRSIgdmFsdWU9IjAiIC8+PHByb3BlcnR5IG5hbWU9IlJFUE9SVF9ERVNDUklQVElPTiIgdmFsdWU9IiIgLz48cHJvcGVydHkgbmFtZT0iREFURV9TVUJNSVRURUQiIHZhbHVlPSIwMS8xOS8yMDIxIiAvPjxwcm9wZXJ0eSBuYW1lPSJEQVRFX0xBU1RfVVBEQVRFRCIgdmFsdWU9IjAxLzE5LzIwMjEiIC8+PHByb3BlcnR5IG5hbWU9IkNPREVSX0lEIiB2YWx1ZT0iU0NUWSIgLz48cHJvcGVydHkgbmFtZT0iQ09NUEFOWV9DT0RFIiB2YWx1ZT0iMDEiIC8+PHByb3BlcnR5IG5hbWU9IlBPTElDWV9OVU1CRVIiIHZhbHVlPSJYTUxUU1QxIiAvPjxwcm9wZXJ0eSBuYW1lPSJQUk9DRVNTIiB2YWx1ZT0iMDAwIiAvPjxwcm9wZXJ0eSBuYW1lPSJCVVNOU1NOTSIgdmFsdWU9IkpBQ0sgVCBKT05FUyIgLz48cHJvcGVydHkgbmFtZT0iQUREUlNTMDEiIHZhbHVlPSIxMDAgTWFpbiBTdCIgLz48cHJvcGVydHkgbmFtZT0iQUREUlNTMDIiIHZhbHVlPSJBcHQgNCIgLz48cHJvcGVydHkgbmFtZT0iQUREUlNTMDMiIHZhbHVlPSIiIC8+PHByb3BlcnR5IG5hbWU9IkFERFJTUzA0IiB2YWx1ZT0iSU5ESUFOQVBPTElTLCBJTiAzMzczNyIgLz48cHJvcGVydHkgbmFtZT0iRklMRV9DT1BZIiB2YWx1ZT0iIiAvPjxwcm9wZXJ0eSBuYW1lPSJFRkZDVFZEVCIgdmFsdWU9IkphbnVhcnkgMDIsIDIwMjEiIC8+PHByb3BlcnR5IG5hbWU9IlRSQU5TQU1UIiB2YWx1ZT0iMjEwLjAwIiAvPjxwcm9wZXJ0eSBuYW1lPSJQT0xDX05VTSIgdmFsdWU9IlhNTFRTVDEiIC8+PHByb3BlcnR5IG5hbWU9IkNVUlJEQVRFIiB2YWx1ZT0iSmFudWFyeSAxOSwgMjAyMSIgLz48L29iamVjdD48L29iamVjdHM+PC90cmFuc2FjdGlvbj48cmV2aWV3LWRvY3VtZW50IGRvY2RlZi1yZXNpZD0iNjkwMjcwNDIzIiBkb2NkZWYtcmVzdmVyaWQ9IjY5MDM0OTM1MyIgYm8tY2xhc3M9IiIgYm8tbmFtZT0iIiBzdHlsZXNldC1yZXNpZD0iNjkwMjcwMDM4IiBzdHlsZXNldC1yZXN2ZXJpZD0iNjkwMzQ4OTk3IiBsYW5ndWFnZT0iLTEiIGp1cmlzZGljdGlvbj0iLTEiIGlkaW9tPSItMSIgZGV2aWNlPSIiIGJyYW5kPSItMSIgZWZmZWN0aXZlLWRhdGU9IjI2L0phbi8yMDIxIDE1OjQxOjE1Ij48dXNlcmtleXMgLz48cmV2aWV3LWNoYW5uZWwgY2hhbm5lbD0iMiIgZGVzdGluYXRpb249Ii01IiBsYXlvdXQtcmVzaWQ9IjY5MDI3MDAzOSIgbGF5b3V0LXJlc3ZlcmlkPSI2OTAzNDg0MDQiPjxwcm9wZXJ0aWVzPjxwcm9wZXJ0eSBuYW1lPSJwcmludC5qb2JzZXR1cCIgdmFsdWU9IlByaW50IiAvPjxwcm9wZXJ0eSBuYW1lPSJkaXNrLm91dHB1dHBhdGgiIHZhbHVlPSIvbW50L2F1dG9mcy9vdXRwdXQvTmVhclN0YXIvMDAwMDAwMDAzNi5wZGYiIC8+PHByb3BlcnR5IG5hbWU9IlBERi1TdWJqZWN0IiB2YWx1ZT0iRGVhdGhDbGFpbXMiIC8+PHByb3BlcnR5IG5hbWU9IlBERi1BdXRob3IiIHZhbHVlPSJTQ1RZIiBwYXRoPSJST1dTLkNPREVSX0lEIiAvPjxwcm9wZXJ0eSBuYW1lPSJQREYtS2V5d29yZHMiIHZhbHVlPSIxMSxZZXMiIC8+PHByb3BlcnR5IG5hbWU9InByaW50LmNvbmZpZy5yZXNpZCIgdmFsdWU9IjY5MDI3MDI1NiIgLz48cHJvcGVydHkgbmFtZT0iZGlzcGxheS13aWR0aCIgdmFsdWU9IjguNWluIiAvPjxwcm9wZXJ0eSBuYW1lPSJQREYtVGl0bGUiIHZhbHVlPSJGcmVlIFRleHQiIC8+PC9wcm9wZXJ0aWVzPjxjb250ZW50PjxyZWdpb24gbmFtZT0iSGVhZGVyIj48c2VjdGlvbiBpZD0iMiIgbmFtZT0iSGVhZGVyIiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxmcmFnIGlkPSIzIiBuYW1lPSJGcmFnIDQiIG5vLW1hdGNoPSJlcnJvciIgdHlwZT0idGV4dCIgZnJhZ3Jlc2lkPSI2OTAyNzAwNDAiIGZyYWdyZXN2ZXJpZD0iNjkwMzQ5NDU5Ij48bGNpaiBpZD0iNSIgbmFtZT0iRWRpdGlvbiA2Ij48dGFibGUgd2lkdGg9IjEwMCUiIHN0eWxlPSJub25lIj48Y29sIHdpZHRoPSIxNC4zJSIgLz48Y29sIHdpZHRoPSI3My40MSUiIC8+PGNvbCB3aWR0aD0iMTIuMjklIiAvPjx0YWJsZWJvZHk+PHJvdz48Y2VsbD48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGltYWdlbGluayBzcmM9Imh0dHBzOi8vMTAuMjQ3LjE1Ny4xODQvc21hcnRjb21tcy9jbGllbnRTZXJ2aWNlcy9yZXNvdXJjZXM/cmVzb3VyY2VOYW1lPTY5MDM0OTQ1OX5hNmE2OGY2ZS5qcGVnIiB3aWR0aD0iMS44MDM0Y20iIGhlaWdodD0iMS44MDM0Y20iIGZvcm1hdD0ianBlZyIgaG9yaXpkcGk9Ijk2IiB2ZXJ0ZHBpPSI5NiIgYWx0PSJWQSBMb2dvIiBjaGVja3N1bT0iYTZhNjhmNmUiIC8+PC9wPjwvY2VsbD48Y2VsbD48cCBzdHlsZT0iSGVhZGVyX0hlYWRpbmciIGFsaWduPSJjZW50ZXIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxiPkRlcGFydG1lbnQgb2YgVmV0ZXJhbnMgQWZmYWlyczwvYj48YnIgLz5JbnN1cmFuY2UgQ2VudGVyPGJyIC8+UE8gQm94IDcyMDg8YnIgLz5QaGlsYWRlbHBoaWEsIFBBIDE5MTAxPC9wPjwvY2VsbD48Y2VsbD48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgLz48L2NlbGw+PC9yb3c+PC90YWJsZWJvZHk+PC90YWJsZT48L2xjaWo+PC9mcmFnPjxmcmFnIGlkPSI0NDc5Njg0MzkiIG5hbWU9IkZyYWcgMTQiIG5vLW1hdGNoPSJlcnJvciIgdHlwZT0idGV4dCIgZnJhZ3Jlc2lkPSI2OTAyNzA0MTkiIGZyYWdyZXN2ZXJpZD0iNjkwMzQ5MTA4Ij48bGNpaiBpZD0iNTIxMjIyNDM0IiBuYW1lPSJFZGl0aW9uIDE2Ij48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgLz48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHZhciBuYW1lPSJnZXRTeXN0ZW1WYXJpYWJsZXMuZ2V0Q3VycmVudERhdGUiIHR5cGU9ImRhdGUiIGZvcm1hdD0iTU0vZGQveXl5eSI+MDEvMjYvMjAyMTwvdmFyPjwvcD48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgLz48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgLz48L2xjaWo+PC9mcmFnPjxmcmFnIGlkPSI4NDU1MzE1MTUiIG5hbWU9Ik5vIE5leHQgT2YgS2luIiBuby1tYXRjaD0iZXJyb3IiIHR5cGU9InRleHQiIGZyYWdyZXNpZD0iNjkwMjcwNDE5IiBmcmFncmVzdmVyaWQ9IjY5MDM0OTEwOCI+PGxjaWogaWQ9IjE5NTkyMDIxMjkiIG5hbWU9IkVkaXRpb24gMTYiPjx0YWJsZSB3aWR0aD0iMTAwJSI+PGNvbCB3aWR0aD0iMzMuMzMzMzMzMzMzMzMzMyUiIC8+PGNvbCB3aWR0aD0iMzMuMzMzMzMzMzMzMzMzMyUiIC8+PGNvbCB3aWR0aD0iMzMuMzMzMzMzMzMzMzMzMyUiIC8+PHRhYmxlYm9keT48cm93PjxjZWxsPjxwIHN0eWxlPSJTaWciIHhtbDpzcGFjZT0icHJlc2VydmUiPjx2YXIgbmFtZT0iQlVTTlNTTk0iIHR5cGU9InN0cmluZyIgZWRpdC1ncm91cHM9IioiIGZ1bGwtcGF0aD0iUk9XUy5CVVNOU1NOTSI+SkFDSyBUIEpPTkVTPC92YXI+PGJyIC8+PHZhciBuYW1lPSJBRERSU1MwMSIgdHlwZT0ic3RyaW5nIiBmdWxsLXBhdGg9IlJPV1MuQUREUlNTMDEiPjEwMCBNYWluIFN0PC92YXI+PGJyIC8+PHZhciBuYW1lPSJBRERSU1MwMiIgdHlwZT0ic3RyaW5nIiBmdWxsLXBhdGg9IlJPV1MuQUREUlNTMDIiPkFwdCA0PC92YXI+PGJyIC8+PHZhciBuYW1lPSJBRERSU1MwMyIgdHlwZT0ic3RyaW5nIiBmdWxsLXBhdGg9IlJPV1MuQUREUlNTMDMiIC8+PGJyIC8+PHZhciBuYW1lPSJBRERSU1MwNCIgdHlwZT0ic3RyaW5nIiBmdWxsLXBhdGg9IlJPV1MuQUREUlNTMDQiPklORElBTkFQT0xJUywgSU4gMzM3Mzc8L3Zhcj48L3A+PC9jZWxsPjxjZWxsPjxwIHN0eWxlPSJib2R5IiB4bWw6c3BhY2U9InByZXNlcnZlIiAvPjwvY2VsbD48Y2VsbD48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGZyYWcgaWQ9IjQ0Nzk2ODQzOSIgbmFtZT0iRnJhZyAxNCIgbm8tbWF0Y2g9ImVycm9yIiB0eXBlPSJ0ZXh0IiBmcmFncmVzaWQ9IjY5MDI3MDc5OCIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkxMDIiPjxwIHN0eWxlPSJib2R5IiB4bWw6c3BhY2U9InByZXNlcnZlIj5JbiBSZXBseSBSZWZlciBUbzo8L3A+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiPjMxMC8yOTU8L3A+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiPlBvbGljeSBOdW1iZXI8L3A+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiPjx2YXIgbmFtZT0iUE9MSUNZX05VTUJFUiIgdHlwZT0ic3RyaW5nIiBmdWxsLXBhdGg9IlJPV1MuUE9MSUNZX05VTUJFUiI+WE1MVFNUMTwvdmFyPjwvcD48L2ZyYWc+PC9wPjwvY2VsbD48L3Jvdz48L3RhYmxlYm9keT48L3RhYmxlPjwvbGNpaj48L2ZyYWc+PC9zZWN0aW9uPjwvcmVnaW9uPjxyZWdpb24gbmFtZT0iQm9keSI+PHNlY3Rpb24gaWQ9IjEyIiBuYW1lPSJCb2R5IiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxzZWN0aW9uIGlkPSIyOCIgbmFtZT0iRWRpdGFibGUiIGZyYWdyZXNpZD0iNjkwMjcwNDIzIiBmcmFncmVzdmVyaWQ9IjY5MDM0OTM1MyI+PGZyYWcgaWQ9IjEzIiBuYW1lPSJTYWx1dGF0aW9uIiBuby1tYXRjaD0iZXJyb3IiIHR5cGU9InRleHQiIGVkaXQtZ3JvdXBzPSIqIiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxsY2lqIGlkPSIxNSIgbmFtZT0iRWRpdGlvbiAxNiI+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiIC8+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiIC8+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiPkRlYXIgTXIuL01zLi9NcnMuIDx2YXIgbmFtZT0iUk9XUy5CVVNOU1NOTSIgdHlwZT0ic3RyaW5nIiBlZGl0LWdyb3Vwcz0iKiI+SkFDSyBUIEpPTkVTPC92YXI+OjwvcD48L2xjaWo+PC9mcmFnPjxmcmFnIGlkPSIxNyIgbmFtZT0iRnJlZSBUZXh0IiBuby1tYXRjaD0iZXJyb3IiIHR5cGU9InRleHQiIGVkaXQtZ3JvdXBzPSIqIiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxsY2lqIGlkPSIxOCIgbmFtZT0iV2UgYXJlIGF1dGhvcml6aW5nIHBheW1lbnQiPjxwIHN0eWxlPSJib2R5IiB4bWw6c3BhY2U9InByZXNlcnZlIiAvPjxwIHN0eWxlPSJib2R5IiB4bWw6c3BhY2U9InByZXNlcnZlIj4mbHQ7RW50ZXIgRnJlZSBUZXh0Jmd0OzwvcD48cCBzdHlsZT0iYm9keSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgLz48L2xjaWo+PC9mcmFnPjwvc2VjdGlvbj48c2VjdGlvbiBpZD0iMzQiIG5hbWU9IklmIHlvdSBoYXZlIHF1ZXN0aW9ucyIgZnJhZ3Jlc2lkPSI2OTAyNzA0MjMiIGZyYWdyZXN2ZXJpZD0iNjkwMzQ5MzUzIj48ZnJhZyBpZD0iMjYiIG5hbWU9IklmIHlvdSBoYXZlIHF1ZXN0aW9ucyIgbm8tbWF0Y2g9ImVycm9yIiB0eXBlPSJ0ZXh0IiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxsY2lqIGlkPSIyNyIgbmFtZT0iSWYgeW91IGhhdmUgcXVlc3Rpb25zIj48cCBzdHlsZT0iYm9keWhlYWRpbmciIGFsaWduPSJsZWZ0IiB4bWw6c3BhY2U9InByZXNlcnZlIj5JZiBZb3UgSGF2ZSBRdWVzdGlvbnMgb3IgTmVlZCBNb3JlIEluZm9ybWF0aW9uPC9wPjxwIHN0eWxlPSJib2R5IiB4bWw6c3BhY2U9InByZXNlcnZlIj5JZiB5b3UgaGF2ZSBxdWVzdGlvbnMgb3IgbmVlZCBtb3JlIGluZm9ybWF0aW9uLCBwbGVhc2UgY2FsbCB0aGUgVkEgSW5zdXJhbmNlIENlbnRlciBhdCA8c2VjdGlvbiBpZD0iNyIgbmFtZT0iVG9sbC1mcmVlIG51bWJlciIgZWRpdC1ncm91cHM9IioiIGZyYWdyZXNpZD0iNjkwMjcwNDQwIiBmcmFncmVzdmVyaWQ9IjY5MDM0NzA5MiI+PGZyYWcgaWQ9IjgiIG5hbWU9IlRvbGwtZnJlZSBudW1iZXIiIG5vLW1hdGNoPSJlcnJvciIgdHlwZT0idGV4dCIgZnJhZ3Jlc2lkPSI2OTAyNzA0NDAiIGZyYWdyZXN2ZXJpZD0iNjkwMzQ3MDkyIj48cCBzdHlsZT0iaW5oZXJpdCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+MS04MDAtNjY5LTg0Nzc8L3A+PC9mcmFnPjwvc2VjdGlvbj4gYmV0d2VlbiA4OjMwIGEubS4gYW5kIDY6MDAgcC5tLiAoRVQpLCBNb25kYXkgdGhyb3VnaCBGcmlkYXkuPC9wPjxwIHN0eWxlPSJib2R5IiB4bWw6c3BhY2U9InByZXNlcnZlIiAvPjwvbGNpaj48L2ZyYWc+PC9zZWN0aW9uPjxzZWN0aW9uIGlkPSIzMSIgbmFtZT0iWW91cnMgc2luY2VyZWx5IiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxmcmFnIGlkPSIyOSIgbm8tbWF0Y2g9ImVycm9yIiB0eXBlPSJ0ZXh0IiBmcmFncmVzaWQ9IjY5MDI3MDUzNiIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDc1ODciPjxsY2lqIGlkPSIzMCI+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiIC8+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiPlNpbmNlcmVseSB5b3Vycyw8L3A+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiIC8+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiPlZBIEluc3VyYW5jZSBDZW50ZXI8L3A+PHAgc3R5bGU9ImJvZHkiIHhtbDpzcGFjZT0icHJlc2VydmUiIC8+PC9sY2lqPjwvZnJhZz48L3NlY3Rpb24+PC9zZWN0aW9uPjwvcmVnaW9uPjxyZWdpb24gbmFtZT0iRm9vdGVyIj48c2VjdGlvbiBpZD0iMTIyNTAyMDk2MCIgbmFtZT0iRm9vdGVyIiBmcmFncmVzaWQ9IjY5MDI3MDQyMyIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDkzNTMiPjxzZWN0aW9uIGlkPSI3IiBuYW1lPSJGb290ZXIiIGVkaXQtZ3JvdXBzPSIqIiBmcmFncmVzaWQ9IjY5MDI3MDQyMCIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDcwOTUiPjxmcmFnIGlkPSI4IiBuYW1lPSJGcmFnIDkiIG5vLW1hdGNoPSJlcnJvciIgdHlwZT0idGV4dCIgZnJhZ3Jlc2lkPSI2OTAyNzA0MjAiIGZyYWdyZXN2ZXJpZD0iNjkwMzQ3MDk1Ij48bGNpaiBpZD0iMTAiIG5hbWU9IkVkaXRpb24gMTEiPjx0YWJsZSB3aWR0aD0iMTAwJSI+PGNvbCB3aWR0aD0iMTAwJSIgLz48dGFibGVib2R5Pjxyb3cgc3R5bGU9IkZvb3RlckxpbmUiPjxjZWxsIHN0eWxlPSJQYWRkZWRDZWxsIj48cCBzdHlsZT0iZm9vdGVyIiBhbGlnbj0iY2VudGVyIiB0YWItc3RvcHM9ImNlbnRlciBzcGFjZSAyMzRwdCBlbmQgc3BhY2UgNDY4cHQiIHhtbDpzcGFjZT0icHJlc2VydmUiPlRvbGwtZnJlZSAgKDxzZWN0aW9uIGlkPSI3IiBuYW1lPSJUb2xsLWZyZWUgbnVtYmVyIiBlZGl0LWdyb3Vwcz0iKiIgZnJhZ3Jlc2lkPSI2OTAyNzA0NDAiIGZyYWdyZXN2ZXJpZD0iNjkwMzQ3MDkyIj48ZnJhZyBpZD0iOCIgbmFtZT0iVG9sbC1mcmVlIG51bWJlciIgbm8tbWF0Y2g9ImVycm9yIiB0eXBlPSJ0ZXh0IiBmcmFncmVzaWQ9IjY5MDI3MDQ0MCIgZnJhZ3Jlc3ZlcmlkPSI2OTAzNDcwOTIiPjxwIHN0eWxlPSJpbmhlcml0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4xLTgwMC02NjktODQ3NzwvcD48L2ZyYWc+PC9zZWN0aW9uPikgIFVQTE9BRCBZT1VSIERPQ1VNRU5UUyBodHRwczovL2luc3VyYW5jZS52YS5nb3YvaG9tZS9pZHUgPC9wPjxwIHN0eWxlPSJmb290ZXIiIGFsaWduPSJjZW50ZXIiIHRhYi1zdG9wcz0iY2VudGVyIHNwYWNlIDIzNHB0IGVuZCBzcGFjZSA0NjhwdCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+V2ViIHNpdGUgJmFtcDsgZS1tYWlsICh3d3cuaW5zdXJhbmNlLnZhLmdvdikgSG91cnMgb2Ygb3BlcmF0aW9uOiAgKE1vbi4tRnJpLiA4OjMwIGEubS4gLSA2OjAwIHAubS4gRVQpPC9wPjxwIHN0eWxlPSJmb290ZXIiIGFsaWduPSJjZW50ZXIiIHRhYi1zdG9wcz0iY2VudGVyIHNwYWNlIDIzNHB0IGVuZCBzcGFjZSA0NjhwdCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+QmVzdCBkYXlzIHRvIGNhbGwgKFdlZC4gYW5kIFRodXJzLikgQXV0b21hdGVkIHBvbGljeSBhY2Nlc3MgKDI0IGhvdXJzLCA3IGRheXMgYSB3ZWVrKSA8L3A+PHAgc3R5bGU9ImZvb3RlciIgYWxpZ249ImNlbnRlciIgdGFiLXN0b3BzPSJjZW50ZXIgc3BhY2UgMjM0cHQgZW5kIHNwYWNlIDQ2OHB0IiB4bWw6c3BhY2U9InByZXNlcnZlIj5Fc3BlY2lhbGlzdGFzIGRpc3BvbmlibGVzIHF1ZSBoYWJsYW4gRXNwYcODwrFvbC48L3A+PC9jZWxsPjwvcm93PjwvdGFibGVib2R5PjwvdGFibGU+PC9sY2lqPjwvZnJhZz48L3NlY3Rpb24+PC9zZWN0aW9uPjwvcmVnaW9uPjwvY29udGVudD48ZW5jbG9zdXJlcyAvPjwvcmV2aWV3LWNoYW5uZWw+PC9yZXZpZXctZG9jdW1lbnQ+PC9yZXZpZXctY2FzZT4=" class="xmLDATABASE64" value=""/>
-	           		<input type=submit id="saveBtn" name="submit" onclick="form.action='save'; getStringFromEditor();" value="Save v.147" disabled/>
-	           		<input type=submit id="finalBtn" name="submit"  onclick="form.action='finalize'; getStringFromEditor();" value="Finalize v.147" disabled/>
-	           	</form>
-	       
-	   
-</div>
-<div id="thunderheadApplication" style="height: 791px;"></div>
-</body>
+  </head>
+  <body>
+    <header class="usa-header usa-header--basic">
+      <div class="usa-nav-container">
+        <div class="usa-navbar">
+          <div class="usa-logo" id="basic-logo">
+            <em class="usa-logo__text"
+              ><a href="/" title="Home" aria-label="Home"
+                >LIPAS SmartCOMM</a
+              ></em
+            >
+          </div>
+        </div>
+        <nav aria-label="Primary navigation" class="usa-nav">
+          <button class="usa-nav__close">
+            <img src="/assets/img/close.svg" role="img" alt="close" />
+          </button>
+          <ul class="usa-nav__primary usa-accordion">
+            <li class="usa-nav__primary-item">
+              <a class="usa-nav__link" href="./list.html">Back to list</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="draft-form-container">
+      <form id="draftForm" action="/draft-editor/editor" method="post">
+        <input
+          type="submit"
+          id="saveBtn"
+          name="submit"
+          onclick="form.action='save'; getStringFromEditor();"
+          value="Save v.147"
+          class="usa-button usa-button--accent-cool"
+        />
+        <input
+          type="submit"
+          id="finalBtn"
+          name="submit"
+          onclick="form.action='finalize'; getStringFromEditor();"
+          value="Finalize v.147"
+          class="usa-button"
+        />
+      </form>
+    </section>
+    <div id="thunderheadApplication" style="height: 791px"></div>
+    <script src="./resources/uswds-2.10.0/js/uswds.min.js"></script>
+  </body>
 </html>

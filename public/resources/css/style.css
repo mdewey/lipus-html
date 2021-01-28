@@ -138,3 +138,11 @@ label.usa-label {
 #drafts td.center-text {
   text-align: center;
 }
+
+.draft-form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid #dfe1e2;
+  padding-bottom: 2rem;
+}
