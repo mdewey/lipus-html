@@ -1,27 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="./resources/uswds-2.10.0/js/uswds-init.min.js"></script>
-  <link rel="stylesheet" href="resources/uswds-2.10.0/css/uswds.min.css">
-</head>
-<body>
-  <h1>LIPAS UI</h1>
-  <ul>
-    <li><a href="./editor.html">editor</a></li>
-    <li><a href="./list.html">list</a></li>
-    <li><a href="./error.html">error</a></li>
-  </ul>
-  <h2>library test</h2>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./resources/uswds-2.10.0/js/uswds-init.min.js"></script>
+    <link rel="stylesheet" href="resources/uswds-2.10.0/css/uswds.min.css" />
+  </head>
+  <body>
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <header class="usa-header usa-header--basic">
+      <div class="usa-nav-container">
+        <div class="usa-navbar">
+          <div class="usa-logo" id="basic-logo">
+            <em class="usa-logo__text"
+              ><a href="/" title="Home" aria-label="Home"
+                >LIPAS SmartCOMM</a
+              ></em
+            >
+          </div>
+          <button class="usa-menu-btn">Menu</button>
+        </div>
+        <nav aria-label="Primary navigation" class="usa-nav">
+          <button class="usa-nav__close">
+            <img src="/assets/img/close.svg" role="img" alt="close" />
+          </button>
+          <ul class="usa-nav__primary usa-accordion">
+            <li class="usa-nav__primary-item">
+              <a class="usa-nav__link usa-current" href="list.html">
+                <span>List</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main-content"></main>
+    <h1>LIPAS UI</h1>
+    <ul>
+      <li><a href="./editor.html">editor</a></li>
+      <li><a href="./list.html">list</a></li>
+      <li><a href="./error.html">error</a></li>
+    </ul>
+    <h2>library test</h2>
 
-<div class="usa-alert usa-alert--info" >
-  <div class="usa-alert__body">
-    <h3 class="usa-alert__heading">Informative status</h3>
-    <p class="usa-alert__text">Lorem ipsum dolor sit amet, <a class="usa-link" href="javascript:void(0);">consectetur adipiscing</a> elit, sed do eiusmod.</p>
-  </div>
-</div>
-  <script src="./resources/uswds-2.10.0/js/uswds.min.js"></script>
-</body>
+    <div class="usa-alert usa-alert--info">
+      <div class="usa-alert__body">
+        <h3 class="usa-alert__heading">Informative status</h3>
+        <p class="usa-alert__text">
+          Lorem ipsum dolor sit amet,
+          <a class="usa-link" href="javascript:void(0);"
+            >consectetur adipiscing</a
+          >
+          elit, sed do eiusmod.
+        </p>
+      </div>
+    </div>
+    <script src="./resources/uswds-2.10.0/js/uswds.min.js"></script>
+  </body>
 </html>
