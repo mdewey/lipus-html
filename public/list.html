@@ -38,7 +38,6 @@
         </nav>
       </div>
     </header>
-    <!-- ---------------------------------- -->
     <div class="search-form">
       <form id="draftReqForm" action="list" method="post" class="usa-form">
         <fieldset class="usa-fieldset debug-border">
@@ -83,18 +82,19 @@
         </fieldset>
       </form>
     </div>
-    <p></p>
-
-    <table id="drafts">
+    <table id="drafts" class="usa-table">
+      <caption>
+        Results
+      </caption>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>POLICY NUMBER</th>
-          <th>FORM SUB TYPE</th>
-          <th>STATUS CODE</th>
-          <th>STATUS MESSAGE</th>
-          <th>DATE SUBMITTED</th>
-          <th>DRAFT EDITOR</th>
+          <th scope="col">ID</th>
+          <th scope="col">POLICY NUMBER</th>
+          <th scope="col">FORM SUB TYPE</th>
+          <th scope="col">STATUS CODE</th>
+          <th scope="col">STATUS MESSAGE</th>
+          <th scope="col">DATE SUBMITTED</th>
+          <th scope="col">DRAFT EDITOR</th>
         </tr>
       </thead>
       <tbody>
@@ -102,7 +102,7 @@
           <td>43</td>
           <td>XMLTST1</td>
           <td>CACVP01B1</td>
-          <td>N</td>
+          <td class="center-text">N</td>
           <td>Request 43 loaded successfully.</td>
           <td>1/19/2021 12:12:19 PM</td>
           <td>
@@ -129,7 +129,7 @@
           <td>67</td>
           <td>XMLTST2</td>
           <td>MPVER01PE</td>
-          <td>N</td>
+          <td class="center-text">N</td>
           <td>Request 67 loaded successfully.</td>
           <td>1/20/2021 3:06:01 PM</td>
           <td>
@@ -156,7 +156,7 @@
           <td>69</td>
           <td>XMLTST2</td>
           <td>FRTXT01PE</td>
-          <td>N</td>
+          <td class="center-text">N</td>
           <td>Request 69 loaded successfully.</td>
           <td>1/20/2021 3:06:38 PM</td>
           <td>
@@ -183,7 +183,7 @@
           <td>70</td>
           <td>XMLTST2</td>
           <td>RCHBN01PE</td>
-          <td>N</td>
+          <td class="center-text">N</td>
           <td>Request 70 loaded successfully.</td>
           <td>1/20/2021 3:06:54 PM</td>
           <td>
@@ -210,7 +210,7 @@
           <td>71</td>
           <td>XMLTST2</td>
           <td>REQDN01PE</td>
-          <td>N</td>
+          <td class="center-text">N</td>
           <td>Request 71 loaded successfully.</td>
           <td>1/20/2021 3:07:08 PM</td>
           <td>
@@ -237,7 +237,7 @@
           <td>73</td>
           <td>XMLTST2</td>
           <td>RETSP01PE</td>
-          <td>N</td>
+          <td class="center-text">N</td>
           <td>Test</td>
           <td>1/20/2021 3:07:25 PM</td>
           <td>
