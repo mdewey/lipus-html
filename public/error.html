@@ -1,77 +1,61 @@
-
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Error - Oops!</title>
-        <link href="resources/css/style.css" rel="stylesheet">
-    </head>
-    <body>
-    <h1 align=center>Error Page</h1>
-    <p align=center>Time for a coffee break</p>
-    <p align=center>Application has encountered an error. Please contact support.</p>
-	  <!--
-	    Failed URL: http://localhost:8080/draft-editor/editor
-	    Exception:  java.net.SocketTimeoutException: Read timed out
-	            org.glassfish.jersey.client.internal.HttpUrlConnector.apply(HttpUrlConnector.java:261) 
-	        org.glassfish.jersey.client.ClientRuntime.invoke(ClientRuntime.java:296) 
-	        org.glassfish.jersey.client.JerseyInvocation.lambda$invoke$0(JerseyInvocation.java:609) 
-	        org.glassfish.jersey.internal.Errors.process(Errors.java:292) 
-	        org.glassfish.jersey.internal.Errors.process(Errors.java:274) 
-	        org.glassfish.jersey.internal.Errors.process(Errors.java:205) 
-	        org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:390) 
-	        org.glassfish.jersey.client.JerseyInvocation.invoke(JerseyInvocation.java:608) 
-	        org.glassfish.jersey.client.JerseyInvocation$Builder.method(JerseyInvocation.java:421) 
-	        org.glassfish.jersey.client.JerseyInvocation$Builder.post(JerseyInvocation.java:327) 
-	        gov.va.lipas.editor.services.smartcomm.rest.GenerateDraftRestClientImpl.getDraftXml(GenerateDraftRestClientImpl.java:82) 
-	        gov.va.lipas.editor.services.smartcomm.model.SmartCommDao.getDraftEditorLoadXml(SmartCommDao.java:29) 
-	        gov.va.lipas.editor.services.lifepro.model.LifeProDao.getDraftXml(LifeProDao.java:57) 
-	        gov.va.lipas.editor.controllers.EditorController.edit(EditorController.java:42) 
-	        sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) 
-	        sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) 
-	        sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) 
-	        java.lang.reflect.Method.invoke(Method.java:498) 
-	        org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197) 
-	        org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:141) 
-	        org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:106) 
-	        org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:894) 
-	        org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) 
-	        org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) 
-	        org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1060) 
-	        org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:962) 
-	        org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) 
-	        org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) 
-	        javax.servlet.http.HttpServlet.service(HttpServlet.java:652) 
-	        org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) 
-	        javax.servlet.http.HttpServlet.service(HttpServlet.java:733) 
-	        org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) 
-	        org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) 
-	        org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) 
-	        org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) 
-	        org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) 
-	        org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202) 
-	        org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) 
-	        org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) 
-	        org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143) 
-	        org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) 
-	        org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:690) 
-	        org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) 
-	        org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) 
-	        org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374) 
-	        org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) 
-	        org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888) 
-	        org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597) 
-	        org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) 
-	        java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) 
-	        java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) 
-	        org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) 
-	        java.lang.Thread.run(Thread.java:748) 
-	    
-	  -->
-		<div align=center><img src="resources/images/oops.jpg" alt="Oops!"></div>
-    </body>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Error - Oops!</title>
+    <link href="resources/css/style.css" rel="stylesheet" />
+    <script src="./resources/uswds-2.10.0/js/uswds-init.min.js"></script>
+    <link rel="stylesheet" href="resources/uswds-2.10.0/css/uswds.min.css" />
+  </head>
+  <body>
+    <header class="usa-header usa-header--basic">
+      <div class="usa-nav-container">
+        <div class="usa-navbar">
+          <div class="usa-logo" id="basic-logo">
+            <em class="usa-logo__text"
+              ><a href="/" title="Home" aria-label="Home"
+                >LIPAS SmartCOMM</a
+              ></em
+            >
+          </div>
+        </div>
+        <nav aria-label="Primary navigation" class="usa-nav">
+          <button class="usa-nav__close">
+            <img src="/assets/img/close.svg" role="img" alt="close" />
+          </button>
+          <ul class="usa-nav__primary usa-accordion">
+            <li class="usa-nav__primary-item">
+              <a class="usa-nav__link" href="./list.html">Back to list</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="usa-card-group error-message">
+      <section class="tablet:grid-col-4 usa-card usa-card--header-first">
+        <div class="usa-card__container">
+          <header class="usa-card__header">
+            <h2 class="usa-card__heading">It appears something went wrong.</h2>
+          </header>
+          <div class="usa-card__media">
+            <div class="usa-card__img">
+              <img
+                src="resources/images/oops.jpg"
+                alt="Error message image of a cup of coffee"
+              />
+            </div>
+          </div>
+          <div class="usa-card__body">
+            <p>The system has encountered an error.</p>
+          </div>
+          <div class="usa-card__footer">
+            <a class="usa-button" href="#">Back to list</a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <script src="./resources/uswds-2.10.0/js/uswds.min.js"></script>
+  </body>
 </html>

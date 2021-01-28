@@ -146,3 +146,18 @@ label.usa-label {
   border-bottom: 2px solid #dfe1e2;
   padding-bottom: 2rem;
 }
+
+.error-body {
+  display: flex;
+  justify-content: center;
+}
+
+.error-message {
+  display: flex;
+  justify-content: center;
+}
+
+.usa-card__heading,
+.usa-card__body {
+  color: #1b1b1b;
+}
